@@ -1,0 +1,17 @@
+.modal-title {
+    color: #5a189a;
+    font-weight: bold;
+}
+
+.event-info, .organizer-details, .category-details, .ticket-classes {
+    margin-bottom: 15px;
+}
+
+.event-info p, .organizer-details p, .category-details p {
+    font-size: 16px;
+}
+
+.badge {
+    font-size: 14px;
+    padding: 5px 10px;
+}

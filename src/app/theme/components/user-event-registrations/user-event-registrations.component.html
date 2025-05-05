@@ -1,0 +1,92 @@
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Dates</th>
+            <th>Languages</th>
+            <th>Location</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of eventsList">
+            <td>{{ user.title }}</td>
+            <td>{{ user.from_date |date }} {{user.to_date | date}}</td>
+            <td>{{ user.languages }}</td>
+            <td>{{ user.location }}</td>
+            <td>{{ user.status}}</td>
+            <td class="text-center">
+
+                <button class="btn btn-primary" data-toggle="modal" data-target="#eventModal" (click)="openSidebar(user)" style="cursor: pointer;">Click to view users</button>
+
+
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="eventModalLabel">{{ userDetails?.event?.title }}</h3>
+            </div>
+            <div class="modal-body" *ngIf="userDetails && userDetails.length">
+                <div
+                  *ngFor="let data of userDetails; let i = index"
+                  class="mb-4 p-3 border rounded shadow-sm bg-light"
+                >
+                  <h6 class="text-primary">Registration #{{ i + 1 }}</h6>
+                  <div class="row">
+                    <div class="col-md-6 mb-2">
+                      <strong>User Name:</strong> {{ data.user.first_name }} {{ data.user.last_name }}
+                    </div>
+                    <div class="col-md-6 mb-2">
+                      <strong>Email:</strong> {{ data.user.email }}
+                    </div>
+                    <div class="col-md-6 mb-2">
+                      <strong>Role:</strong> {{ data.user.role }}
+                    </div>
+                    <div class="col-md-6 mb-2">
+                      <strong>Status:</strong> {{ data.user.status }}
+                    </div>
+                  </div>
+              
+                  <hr />
+              
+                  <div class="row">
+                    <div class="col-md-6 mb-2">
+                      <strong>Event:</strong> {{ data.event.title }}
+                    </div>
+                    <div class="col-md-6 mb-2">
+                      <strong>Location:</strong> {{ data.event.location }}
+                    </div>
+                  </div>
+              
+                  <div class="row">
+                    <div class="col-md-6 mb-2">
+                      <strong>Ticket:</strong> {{ data.ticket_class.name }}
+                    </div>
+                    <div class="col-md-6 mb-2">
+                      <strong>Price:</strong> {{ data.ticket_class.price | currency: 'USD' }}
+                    </div>
+                  
+                  </div>
+                </div>
+              </div>
+              
+              
+
+           
+
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

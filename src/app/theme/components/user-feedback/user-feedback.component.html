@@ -1,0 +1,70 @@
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+          <th>Title</th>
+          <th>Dates</th>
+          <th>Languages</th>
+          <th>Location</th>
+          <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of eventsList">
+        <td>{{ user.title }}</td>
+        <td>{{ user.from_date |date }} {{user.to_date | date}}</td>
+        <td>{{ user.languages }}</td>
+        <td>{{ user.location }}</td>
+        <td>{{ user.status}}</td>
+            <td class="text-center">
+
+            <button class="btn btn-primary" data-toggle="modal" data-target="#eventModal" (click)="openSidebar(user)" style="cursor: pointer;">View Feedback</button>
+</td>
+          
+        </tr>
+    </tbody>
+  </table>
+
+
+
+ <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="eventModalLabel">Feedback</h3>
+            </div>
+            <div class="modal-body" *ngIf="feedbackList && feedbackList.length > 0">
+                <div *ngFor="let fb of feedbackList" class="border rounded p-3 mb-3 shadow-sm">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <h5 class="mb-1">{{ fb.user.first_name }} {{ fb.user.last_name }}</h5>
+                      <small class="text-muted">{{ fb.user.email }}</small>
+                    </div>
+                    <div>
+                      <span class="badge bg-success">Rating: {{ fb.rating }}/5</span>
+                    </div>
+                  </div>
+                  <p class="mt-2 mb-0"><strong>Comment:</strong> {{ fb.comments }}</p>
+                  <small class="text-muted">Submitted on: {{ fb.created_at | date:'medium' }}</small>
+                </div>
+              </div>
+              
+              <!-- Show message if no feedback available -->
+              <div class="modal-body" *ngIf="feedbackList && feedbackList.length === 0">
+                <p class="text-center text-muted">No feedback submitted for this event.</p>
+              </div>
+              
+          
+              
+              
+
+           
+
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div> 

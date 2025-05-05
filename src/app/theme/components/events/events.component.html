@@ -1,0 +1,232 @@
+<div *ngIf="this.role == 'Organizer'" class="text-right">
+  <button type="button" class="btn btn-success" (click)="openSidebar(eventsList, 'add')">Add Event</button>
+</div>
+<br>
+<table  class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Dates</th>
+      <th>Languages</th>
+      <th>Location</th>
+      <th>Capacity</th>
+      <th>Organizer</th>
+      <th>Category</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of eventsList">
+      <td>{{ user.title }}</td>
+      <td>{{ user.from_date |date }} {{user.to_date | date}}</td>
+      <td>{{ user.languages }}</td>
+      <td>{{ user.location }}</td>
+      <td>{{ user.capacity }}</td>
+      <td>{{ user.organizer.first_name}} {{ user.organizer.last_name}}</td>
+      <td>{{ user.category.name}}</td>
+      <td>{{ user.status}}</td>
+      <td class="text-center">
+        <i *ngIf="role == 'Organizer'" class="fa-solid fa-file-pen" style="cursor: pointer;"
+          (click)="openSidebar(user, 'edit')"></i>
+        <i class="fa-solid fa-eye ml-2" style="cursor: pointer;" data-toggle="modal" data-target="#eventModal"
+          (click)="openSidebar(user, 'view')"></i>
+        <!-- <button *ngIf="role == 'Participant'" class="btn btn-primary" (click)="registerEvent(user)">Register</button> -->
+
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+<div class="sidebar" [ngClass]="{'open': isSidebarOpen}">
+  <h3>{{ showAdd ? 'Add Event' : 'Edit Event' }}</h3>
+
+  <form [formGroup]="eventForm">
+    <label>Title:</label>
+    <input type="text" formControlName="title" class="form-control">
+
+    <label>Description:</label>
+    <textarea formControlName="description" class="form-control"></textarea>
+
+    <label>From Date:</label>
+    <input type="datetime-local" formControlName="from_date" class="form-control">
+
+    <label>To Date:</label>
+    <input type="datetime-local" formControlName="to_date" class="form-control">
+
+    <label>Languages:</label>
+    <input type="text" formControlName="languages" class="form-control">
+
+    <label>Location:</label>
+    <input type="text" formControlName="location" class="form-control">
+
+    <label>Capacity:</label>
+    <input type="number" formControlName="capacity" class="form-control">
+
+
+    <label>Category:</label>
+    <select type="text" formControlName="category_id" class="form-control">
+      <option value='' disabled>Select Category</option>
+      <option *ngFor="let category of categoryList" [ngValue]="category.id">{{ category.name}}</option>
+    </select>
+
+    <label *ngIf="!showAdd">Status:</label>
+    <select type="text" formControlName="status" class="form-control" *ngIf="!showAdd">
+      <option value='' disabled>Select Status</option>
+      <option value='Active' disabled>Active</option>
+      <option value='Inactive' disabled>Inactive</option>
+    </select>
+
+    <button class="btn btn-success mt-3" (click)="updateData()">{{ showAdd ? 'Add' : 'Update' }}</button>
+    <button class="btn btn-danger mt-3" (click)="closeSidebar()">Close</button>
+  </form>
+</div>
+
+
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="eventModalLabel">{{ userDetails?.event?.title }}</h3>
+      </div>
+      <div class="modal-body">
+        <!-- Event Info -->
+        <div class="event-info mb-3">
+          <h4>{{ userDetails?.event?.title }}</h4>
+          <p><strong>Description:</strong> {{ userDetails?.event?.description }}</p>
+          <p><strong>From:</strong> {{ userDetails?.event?.from_date | date:'short' }}</p>
+          <p><strong>To:</strong> {{ userDetails?.event?.to_date | date:'short' }}</p>
+          <p><strong>Languages:</strong> {{ userDetails?.event?.languages }}</p>
+          <p><strong>Location:</strong> {{ userDetails?.event?.location }}</p>
+          <p><strong>Capacity:</strong> {{ userDetails?.event?.capacity }}</p>
+          <p><strong>Status:</strong> <span class="badge bg-success">{{ userDetails?.event?.status }}</span></p>
+        </div>
+      
+        <hr />
+      
+        <!-- Organizer Info -->
+        <div class="organizer-details mb-3">
+          <h5>Organizer</h5>
+          <p><strong>Name:</strong> {{ userDetails?.event?.organizer?.first_name }} {{ userDetails?.event?.organizer?.last_name }}</p>
+          <p><strong>Email:</strong> {{ userDetails?.event?.organizer?.email }}</p>
+        </div>
+      
+        <hr />
+      
+        <!-- Category Info -->
+        <div class="category-details mb-3">
+          <h5>Category</h5>
+          <p><strong>Name:</strong> {{ userDetails?.event?.category?.name }}</p>
+          <p><strong>Description:</strong> {{ userDetails?.event?.category?.description }}</p>
+        </div>
+      
+        <hr />
+      
+        <!-- Ticket Selection for Admin/Participant -->
+        <div *ngIf="(role === 'Admin' || role === 'Participant') && !registered && userDetails?.ticket_classes?.length">
+          <h5>Select Ticket</h5>
+          <table class="table table-bordered">
+            <thead class="table-dark">
+              <tr>
+                <th>Select</th>
+                <th>Name</th>
+                <th>Total Quantity</th>
+                <th>Available</th>
+                <th>Price ($)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ticket of userDetails?.ticket_classes">
+                <td>
+                  <input type="radio" name="ticketSelection" [value]="ticket.id" (change)="selectTicket(ticket.id)">
+                </td>
+                <td>{{ ticket.name }}</td>
+                <td>{{ ticket.total_quantity }}</td>
+                <td>{{ ticket.available_quantity }}</td>
+                <td>{{ ticket.price | currency: 'USD' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      
+        <!-- Show Registered Ticket -->
+        <div *ngIf="(role === 'Admin' || role === 'Participant') && registered" class="card shadow-sm mt-4">
+          <div class="card-header bg-dark text-white">Ticket Details</div>
+          <div class="card-body">
+            <p><strong>Class:</strong> {{ userDetails?.ticket_class?.name }}</p>
+            <p><strong>Price:</strong> {{ userDetails?.ticket_class?.price | currency: 'USD' }}</p>
+            <p><strong>Ticket Code:</strong> {{ userDetails?.ticket_code }}</p>
+          </div>
+        </div>
+      
+        <!-- Organizer View of Existing Tickets -->
+        <div *ngIf="role === 'Organizer' && userDetails?.ticket_classes?.length">
+          <h5>Ticket Classes</h5>
+          <table class="table table-bordered">
+            <thead class="table-dark">
+              <tr>
+                <th>Name</th>
+                <th>Total Quantity</th>
+                <th>Available Quantity</th>
+                <th>Price ($)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let ticket of userDetails?.ticket_classes">
+                <td>{{ ticket.name }}</td>
+                <td>{{ ticket.total_quantity }}</td>
+                <td>{{ ticket.available_quantity }}</td>
+                <td>{{ ticket.price | currency:'USD' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      
+        <!-- Organizer Add Ticket Form -->
+        <div *ngIf="role === 'Organizer' && (!userDetails?.ticket_classes || userDetails?.ticket_classes.length === 0)">
+          <form [formGroup]="ticketForm">
+            <div formArrayName="tickets">
+              <div *ngFor="let ticket of tickets.controls; let i = index" [formGroupName]="i" class="card p-3 mb-3 border border-primary rounded">
+                <div class="row g-3">
+                  <div class="col-md-4">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" formControlName="name" />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Total Quantity</label>
+                    <input type="number" class="form-control" formControlName="total_quantity" />
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label">Price ($)</label>
+                    <input type="number" class="form-control" formControlName="price" />
+                  </div>
+                  <div class="col-md-1 mt-4">
+                    <button type="button" class="btn btn-danger" (click)="removeTicket(i)" *ngIf="tickets.length > 1">&times;</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="btn btn-outline-primary mb-3" (click)="addTicket()">+ Add Ticket</button>
+            <div>
+              <button class="btn btn-success" (click)="submit()">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <button *ngIf="(role === 'Admin' || role === 'Participant') && !registered" class="btn btn-primary" (click)="register()">Register</button>
+      </div>
+      
+      <div class="modal-footer">
+        <button *ngIf="registered && userDetails?.ticket_classes?.length === 0" class="btn btn-primary" (click)="register()">Register</button>
+
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

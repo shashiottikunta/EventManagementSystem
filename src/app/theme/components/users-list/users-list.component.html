@@ -1,0 +1,52 @@
+<table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of usersList">
+        <td>{{ user.id }}</td>
+        <td>{{ user.first_name }} {{ user.last_name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.role }}</td>
+        <td class="text-center">
+          <i class="fa-solid fa-file-pen" style="cursor: pointer;"
+          (click)="openSidebar(user)"></i>
+        </td>
+      </tr>
+    </tbody>
+</table>
+
+
+<div class="sidebar" [ngClass]="{'open': isSidebarOpen}">
+  <h3>Edit User</h3>
+  <form *ngIf="selectedUser" [formGroup]="userForm">
+      <label>First Name:</label>
+      <input type="text" formControlName="first_name"  class="form-control">
+      
+      <label>Last Name:</label>
+      <input type="email" formControlName="last_name" class="form-control">
+      
+      <label>Email:</label>
+      <input type="text"  formControlName="email" class="form-control">
+
+      <label>Role:</label>
+      <input type="text"  formControlName="role" class="form-control">
+
+      <label>Status:</label>
+      <select type="text"  formControlName="status" class="form-control">
+        <option value='' disabled>Select Status</option>
+        <option value='Active' disabled>Active</option>
+        <option value='Inactive' disabled>Inactive</option>
+      </select>
+
+
+      <button class="btn btn-success mt-3" (click)="updateData()">Update</button>
+      <button class="btn btn-danger mt-3" (click)="closeSidebar()">Close</button>
+  </form>
+</div>

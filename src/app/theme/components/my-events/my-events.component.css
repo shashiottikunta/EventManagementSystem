@@ -1,0 +1,14 @@
+.modal-content {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  h6 {
+    margin-top: 10px;
+    color: #007bff;
+  }
+  

@@ -1,0 +1,96 @@
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Organizer Name</th>
+            <th>Category</th>
+            <th>Dates</th>
+            <th>Capacity</th>
+
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let event of myevEntsList">
+            <td>{{ event.event.title }}</td>
+            <td>{{ event.event.organizer.first_name }} {{ event.event.organizer.last_name }}</td>
+            <td>{{ event.event.category.name }}</td>
+            <td>{{ event.event.from_date }} {{ event.event.to_date }}</td>
+            <td>{{ event.event.capacity }}</td>
+
+            <td>{{ event.event.status }}</td>
+
+            <td class="text-center">
+                <i class="fa-solid fa-eye" style="cursor: pointer;" data-toggle="modal" data-target="#eventModal" (click)="openSidebar(event)"></i>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+<div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="eventModalLabel">{{ eventData?.event?.title }}</h5>
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+        </div>
+  
+        <div class="modal-body">
+          <!-- Event Details -->
+          <h6><strong>Description:</strong></h6>
+          <p>{{ eventData?.event?.description }}</p>
+  
+          <h6><strong>Event Details:</strong></h6>
+          <ul>
+            <li><strong>Date:</strong> {{ eventData?.event?.from_date | date:'long' }} - {{ eventData?.event?.to_date | date:'long' }}</li>
+            <li><strong>Languages:</strong> {{ eventData?.event?.languages }}</li>
+            <li><strong>Location:</strong> {{ eventData?.event?.location }}</li>
+            <li><strong>Category:</strong> {{ eventData?.event?.category?.name }}</li>
+            <li><strong>Organizer:</strong> {{ eventData?.event?.organizer?.first_name }} {{ eventData?.event?.organizer?.last_name }}</li>
+          </ul>
+  
+          <!-- Ticket Class Details -->
+          <h6><strong>Ticket Class:</strong></h6>
+          <ul>
+            <li><strong>Type:</strong> {{ eventData?.ticket_class?.name }}</li>
+            <li><strong>Price:</strong> ${{ eventData?.ticket_class?.price }}</li>
+            <li><strong>Available Quantity:</strong> {{ eventData?.ticket_class?.available_quantity }}</li>
+            <li><strong>Ticket Code:</strong> {{ eventData?.ticket_code }}</li>
+          </ul>
+  
+          <!-- Feedback Form -->
+          <div class="feedback-form mt-4">
+            <h6><strong>Submit Your Feedback</strong></h6>
+            <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
+              <!-- Rating -->
+              <label>Rating:</label>
+              <select class="form-control mb-2" formControlName="rating">
+                <option value="5">⭐⭐⭐⭐⭐</option>
+                <option value="4">⭐⭐⭐⭐</option>
+                <option value="3">⭐⭐⭐</option>
+                <option value="2">⭐⭐</option>
+                <option value="1">⭐</option>
+              </select>
+  
+              <!-- Comments -->
+              <label>Comments:</label>
+              <textarea class="form-control mb-3" formControlName="comments" placeholder="Write your feedback..."></textarea>
+  
+              <!-- Submit Button -->
+              <button class="btn btn-success btn-sm" type="submit" [disabled]="feedbackForm.invalid">Submit Feedback</button>
+            </form>
+          </div>
+        </div>
+  
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  

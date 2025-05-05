@@ -1,0 +1,64 @@
+.custom-header {
+    text-shadow: 2px 2px 4px #b8b6b6;
+    font-size: 20px;
+    margin-left: 20px;
+    font-style: italic;
+    font-weight: bold;
+    color: black;
+}
+.name{
+    font-style: arial;
+    font-size: 16px;
+}
+
+
+/* Default state */
+.icon-circle {
+    width: 73px;
+    height: 73px;
+    background-color: rgb(228, 225, 225); /* Default background */
+    border-radius: 50%; /* Circular shape */
+    display: flex;
+    flex-direction: column; /* Stack icon and text vertically */
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+    border: 2px solid #fff; /* White border */
+    margin-left: 10px; /* Spacing */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    padding: 5px; /* Inner spacing */
+    text-align: center;
+}
+
+.icon-circle i {
+    font-size: 20px; /* Standard icon size */
+    color: #180952; /* Icon color */
+    margin-bottom: 3px; /* Spacing between icon and text */
+}
+
+.icon-circle span {
+    font-size: 12px; /* Standard text size */
+    font-weight: 600; /* Slightly bold for readability */
+    color: #333; /* Dark gray for readability */
+}
+
+/* Hover effect */
+.icon-circle:hover {
+    background-color: #585757;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+}
+
+/* Active route styling */
+.active-icon {
+    background-color: #180952 !important; /* Highlight active tab */
+    color: white !important;
+    border: 2px solid #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.active-icon i, .active-icon span {
+    color: white !important; /* White text on active */
+}
+
+

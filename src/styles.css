@@ -1,0 +1,133 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'ngx-toastr/toastr';
+
+@media (max-width: 768px) {
+    .custom-class {
+      font-size: 14px;
+    }
+  }
+
+
+  .table {
+    width: 100%;
+    border-collapse: separate; /* Required for border-radius */
+    border-spacing: 0; /* Ensures no gaps */
+    background-color: white; /* Keep table white */
+    border-radius: 10px; /* Round corners */
+    overflow: hidden; /* Ensure content inside is clipped */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for better visibility */
+}
+
+thead tr:first-child th:first-child {
+    border-top-left-radius: 10px;
+}
+thead tr:first-child th:last-child {
+    border-top-right-radius: 10px;
+}
+
+tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+th {
+    background: linear-gradient(to right, #d4af37, #ebd442); /* Gold */
+    color: black ;
+    padding: 7px !important;
+    text-align: center !important;
+    font-weight: bold;
+}
+
+/* Cells */
+th, td {
+    padding: 7px !important;
+    border: 1px solid #dee2e6; /* Light gray border */
+    text-align: center;
+}
+
+/* Alternate row color */
+tr:nth-child(even) {
+    background-color: #f8f9fa; /* Light gray for even rows */
+}
+
+tr:nth-child(odd) {
+    background-color: white; /* Pure white for odd rows */
+}
+
+/* Hover effect */
+tr:hover {
+    background-color: #e3f2fd; /* Light blue hover */
+    transition: 0.3s;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0; /* Ensure it starts from the very top */
+    right: -500px; /* Initially hidden */
+    width: 500px;
+    height: 100vh; /* Full height of the viewport */
+    background-color: #343a40;
+    color: white;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+    transition: right 0.3s ease-in-out;
+    overflow: hidden;
+    padding: 20px; /* Add padding for spacing */
+    z-index: 1050; /* Ensure it's above other elements */
+}
+
+/* When Sidebar is Open */
+.sidebar.open {
+    right: 0;
+}
+
+
+/* Make the content inside the sidebar scrollable */
+.sidebar form {
+    max-height: 80vh; /* Set a max height for the form */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding-right: 10px; /* Prevent scrollbar overlap */
+}
+
+/* Ensure proper alignment of labels and inputs */
+.sidebar form label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #fff; /* Ensure label text is visible */
+}
+
+.sidebar form input {
+    width: 100%; /* Make input fields full width */
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Custom Scrollbar (Optional) */
+.sidebar form::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar form::-webkit-scrollbar-track {
+    background: #555;
+}
+
+.sidebar form::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 3px;
+}
+
+/* Style Buttons */
+.sidebar button {
+    width: 100%; /* Make buttons full width */
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+
+
+
